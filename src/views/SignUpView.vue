@@ -6,6 +6,8 @@
     import { useForm } from 'vee-validate'
     import { object, string, ref } from 'yup'
 
+    import axiosClient from '../axios'
+
     useHead({
         title: 'cable · Sign Up'
     })
@@ -30,7 +32,10 @@
     const passwordConfirmation = useFieldModel('passwordConfirmation')
 
     const submit = handleSubmit(values => {
-        alert(JSON.stringify(values, null, 2))
+        // CSRF-Token
+        axiosClient.get('/sanctum/csrf-cookie').then(response => {
+            axiosClient.post('/auth/register', values)
+        })
     })
 </script>
 
@@ -79,6 +84,9 @@
                         :minlength="3"
                         type="email"
                         label="Email address"
+                        :valid="
+                            email !== undefined && errors.email === undefined
+                        "
                     >
                         <template #icon>
                             <svg
@@ -117,6 +125,10 @@
                         :minlength="8"
                         type="password"
                         label="Password"
+                        :valid="
+                            password !== undefined &&
+                            errors.password === undefined
+                        "
                     >
                         <template #icon>
                             <svg
@@ -152,6 +164,10 @@
                         :minlength="8"
                         type="password"
                         label="Confirm Password"
+                        :valid="
+                            passwordConfirmation !== undefined &&
+                            errors.passwordConfirmation === undefined
+                        "
                     >
                         <template #icon>
                             <svg
