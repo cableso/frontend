@@ -138,31 +138,33 @@
                             </svg> </template
                     ></FormInput>
 
-                    <p class="text-xs opacity-70">
-                        By creating an account, you agree to cable's
-                        <a
-                            class="text-black text-opacity-70 hover:text-opacity-100 hover:font-medium transition-all"
-                            href="https://cable.so/terms-of-service"
-                            target="_blank"
-                            ref="noopener noreferrer"
-                            >Terms</a
-                        >
-                        and
-                        <a
-                            class="text-black text-opacity-70 hover:text-opacity-100 hover:font-medium transition-all"
-                            href="https://cable.so/privacy-policy"
-                            target="_blank"
-                            ref="noopener noreferrer"
-                            >Privacy Policy</a
-                        >.
-                    </p>
+                    <div class="pt-4">
+                        <p class="text-xs opacity-70">
+                            By creating an account, you agree to cable's
+                            <a
+                                class="text-black text-opacity-70 hover:text-opacity-100 hover:font-medium transition-all"
+                                href="https://cable.so/terms-of-service"
+                                target="_blank"
+                                ref="noopener noreferrer"
+                                >Terms</a
+                            >
+                            and
+                            <a
+                                class="text-black text-opacity-70 hover:text-opacity-100 hover:font-medium transition-all"
+                                href="https://cable.so/privacy-policy"
+                                target="_blank"
+                                ref="noopener noreferrer"
+                                >Privacy Policy</a
+                            >.
+                        </p>
 
-                    <button
-                        type="submit"
-                        class="w-full py-2 rounded-md bg-black text-neutral-50 text-sm hover:bg-neutral-800 active:scale-95 transition"
-                    >
-                        Sign Up
-                    </button>
+                        <button
+                            type="submit"
+                            class="w-full py-2 mt-2 rounded-md bg-black text-neutral-50 text-sm hover:bg-neutral-800 active:scale-95 transition"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
