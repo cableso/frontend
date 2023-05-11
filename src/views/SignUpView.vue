@@ -2,8 +2,13 @@
     import AppLogo from '@/components/AppLogo.vue'
     import FormInput from '@/components/FormInput.vue'
 
+    import { useHead } from 'unhead'
     import { useForm } from 'vee-validate'
     import { object, string, ref } from 'yup'
+
+    useHead({
+        title: 'cable · Sign Up'
+    })
 
     const schema = object({
         email: string().required('Email is required').email('Invalid Email'),

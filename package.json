@@ -15,6 +15,7 @@
     "@fontsource/inter": "^4.5.15",
     "pinia": "^2.0.35",
     "pinia-plugin-persistedstate": "^3.1.0",
+    "unhead": "^1.1.26",
     "vee-validate": "^4.9.3",
     "vue": "^3.3.1",
     "vue-router": "^4.1.6",
