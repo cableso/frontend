@@ -1,22 +1,35 @@
 <script setup lang="ts">
-    import { ref } from 'vue'
     import AppLogo from '@/components/AppLogo.vue'
     import FormInput from '@/components/FormInput.vue'
 
-    const formData = ref({
-        email: '',
-        password: ''
+    import { useForm } from 'vee-validate'
+    import { object, string } from 'yup'
+
+    const schema = object({
+        email: string().required('Email is required').email('Invalid Email'),
+        password: string().required('Password is required')
+    })
+
+    const { errors, useFieldModel, handleSubmit } = useForm({
+        validationSchema: schema
+    })
+
+    const email = useFieldModel('email')
+    const password = useFieldModel('password')
+
+    const submit = handleSubmit(values => {
+        alert(JSON.stringify(values, null, 2))
     })
 </script>
 
 <template>
     <main
-        class="bg-neutral-50 w-screen h-screen overflow-hidden flex flex-col md:flex-row"
+        class="flex flex-col w-screen h-screen overflow-hidden bg-neutral-50 md:flex-row"
     >
         <div
-            class="h-1/3 w-full md:w-1/2 md:h-full flex items-center justify-center"
+            class="flex items-center justify-center w-full h-1/3 md:w-1/2 md:h-full"
         >
-            <div class="p-12 bg-neutral-50 relative z-10">
+            <div class="relative z-10 p-12 bg-neutral-50">
                 <AppLogo />
             </div>
 
@@ -26,26 +39,29 @@
         </div>
 
         <div
-            class="w-full h-full flex flex-col md:flex-row items-center md:justify-center"
+            class="flex flex-col items-center w-full h-full md:flex-row md:justify-center"
         >
             <div
-                class="max-w-sm w-full bg-white px-10 py-5 shadow-soft rounded-lg"
+                class="w-full max-w-sm px-10 py-5 bg-white rounded-lg shadow-soft"
             >
                 <h1 class="text-2xl font-semibold tracking-tight">Log in</h1>
                 <p class="mt-1 opacity-70">
                     New to cable?
                     <router-link
-                        class="text-black opacity-70 hover:opacity-100 transition"
+                        class="text-black transition opacity-70 hover:opacity-100"
                         to="/sign-up"
                     >
                         Create account
                     </router-link>
                 </p>
 
-                <form class="flex flex-col space-y-4 mt-6">
+                <form
+                    @submit="submit"
+                    class="flex flex-col mt-6 space-y-4"
+                >
                     <FormInput
                         id="email"
-                        v-model="formData.email"
+                        v-model="email"
                         placeholder="john.doe@company.com"
                         :maxlength="255"
                         :minlength="3"
@@ -75,14 +91,18 @@
                                 ></path>
                             </svg>
                         </template>
+
+                        <template #error>
+                            {{ errors.email }}
+                        </template>
                     </FormInput>
 
                     <FormInput
                         id="password"
-                        v-model="formData.password"
+                        v-model="password"
                         placeholder="****************"
                         :maxlength="255"
-                        :minlength="6"
+                        :minlength="8"
                         type="password"
                         label="Password"
                     >
@@ -104,13 +124,18 @@
                                     stroke="currentColor"
                                     d="M16.5 8C16.5 8.27614 16.2761 8.5 16 8.5C15.7239 8.5 15.5 8.27614 15.5 8C15.5 7.72386 15.7239 7.5 16 7.5C16.2761 7.5 16.5 7.72386 16.5 8Z"
                                 ></path>
-                            </svg> </template
-                    ></FormInput>
+                            </svg>
+                        </template>
+
+                        <template #error>
+                            {{ errors.password }}
+                        </template>
+                    </FormInput>
 
                     <div class="pt-4">
                         <button
                             type="submit"
-                            class="w-full py-2 rounded-md bg-black text-neutral-50 text-sm hover:bg-neutral-800 active:scale-95 transition"
+                            class="w-full py-2 text-sm transition bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
                         >
                             Log in
                         </button>

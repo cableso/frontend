@@ -19,19 +19,19 @@
         },
         autofocus: Boolean,
         disabled: Boolean,
-        modelValue: String,
-        value: String,
         valid: Boolean
     })
 
-    defineEmits(['update:modelValue', 'blur', 'input', 'keypress'])
-
     const input = ref<HTMLInputElement>()
+    const modelValue = defineModel()
+
     onMounted(() => {
         if (input.value && input.value.hasAttribute('autofocus')) {
             input.value.focus()
         }
     })
+
+    defineEmits(['blur', 'input', 'keypress'])
 
     defineExpose({
         focus: () => {
@@ -41,17 +41,17 @@
 </script>
 
 <template>
-    <div class="relative w-full rounded-md shadow-soft bg-white transition">
+    <div class="relative w-full transition bg-white rounded-md shadow-soft">
         <input
             :id="id"
             ref="input"
             :placeholder="placeholder"
             :maxlength="maxlength"
             :minlength="minlength"
-            class="floating-label w-full rounded-md border-none bg-transparent py-2 pl-3 pr-14 font-medium text-black placeholder-neutral-400 placeholder-opacity-0 transition focus-within:placeholder-opacity-100 focus:outline-none focus:ring-0 disabled:opacity-50"
+            class="w-full py-2 pl-3 font-medium text-black placeholder-opacity-0 transition bg-transparent border-none rounded-md floating-label pr-14 placeholder-neutral-400 focus-within:placeholder-opacity-100 focus:outline-none focus:ring-0 disabled:opacity-50"
             :type="type"
             :name="id"
-            :value="modelValue ?? value"
+            :value="modelValue"
             :autofocus="autofocus"
             :disabled="disabled"
             @input="
@@ -65,15 +65,19 @@
         />
         <label
             :for="id"
-            class="pointer-events-none absolute top-1/2 px-3 left-3 -translate-y-1/2 text-sm font-medium select-none text-black transition"
+            class="absolute px-1.5 text-sm font-medium text-black transition -translate-y-1/2 pointer-events-none select-none top-1/2 left-4"
         >
             {{ label }}
         </label>
         <div
-            class="absolute right-3 px-3 top-1/2 -translate-y-1/2"
+            class="absolute px-3 -translate-y-1/2 right-3 top-1/2"
             :class="valid ? 'opacity-100' : 'opacity-50'"
         >
             <slot name="icon" />
         </div>
+
+        <span class="absolute text-xs text-red-600 right-2 -top-4">
+            <slot name="error" />
+        </span>
     </div>
 </template>
