@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.shadow-soft {
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Forms */
+.floating-label:focus-within ~ label,
+.floating-label:not(:placeholder-shown) ~ label {
+    @apply -translate-y-[2.2rem] bg-white -translate-x-4 scale-90 text-opacity-40;
+}
+
+::-webkit-input-placeholder {
+    transition: inherit;
+}
