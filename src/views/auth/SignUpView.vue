@@ -32,8 +32,8 @@
 
     const authStore = useAuthStore()
 
-    const submit = handleSubmit(values => {
-        authStore.register({
+    const submit = handleSubmit(async values => {
+        await authStore.register({
             email: values.email,
             password: values.password,
             passwordConfirmation: values.passwordConfirmation

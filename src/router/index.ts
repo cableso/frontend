@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-import SignUpView from '../views/auth/SignUpView.vue'
-import LogInView from '../views/auth/LogInView.vue'
-import ConversationsView from '../views/dashboard/ConversationsView.vue'
+import SignUpView from '@/views/auth/SignUpView.vue'
+import LogInView from '@/views/auth/LogInView.vue'
+import ConversationsView from '@/views/dashboard/ConversationsView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

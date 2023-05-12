@@ -3,15 +3,13 @@
 
     const authStore = useAuthStore()
 
-    const logout = () => {
-        authStore.logout()
+    const logout = async () => {
+        await authStore.logout()
     }
 </script>
 
 <template>
     <div>
-        Conversations! yey
-
         <button @click="logout">Log out</button>
     </div>
 </template>

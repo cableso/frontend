@@ -2,6 +2,7 @@
     import AppLogo from '@/components/AppLogo.vue'
     import FormInput from '@/components/FormInput.vue'
 
+    import { ref } from 'vue'
     import { useHead } from 'unhead'
     import { useForm } from 'vee-validate'
     import { object, string } from 'yup'
@@ -23,13 +24,17 @@
     const email = useFieldModel('email')
     const password = useFieldModel('password')
 
-    const authStore = useAuthStore()
+    const error = ref<string>('')
+    const loading = ref<boolean>(false)
 
-    const submit = handleSubmit(values => {
-        authStore.login({
+    const authStore = useAuthStore()
+    const submit = handleSubmit(async values => {
+        loading.value = true
+        error.value = await authStore.login({
             email: values.email,
             password: values.password
         })
+        loading.value = false
     })
 </script>
 
@@ -150,11 +155,36 @@
                         </template>
                     </FormInput>
 
+                    <span
+                        v-if="error"
+                        class="text-xs text-red-600"
+                    >
+                        {{ error }}
+                    </span>
+
                     <div class="pt-4">
                         <button
                             type="submit"
-                            class="w-full py-2 text-sm transition bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
+                            class="flex items-center justify-center w-full py-2 text-sm transition-all bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
                         >
+                            <div
+                                v-if="loading"
+                                class="mr-4 sk-circle"
+                            >
+                                <div class="sk-circle1 sk-child"></div>
+                                <div class="sk-circle2 sk-child"></div>
+                                <div class="sk-circle3 sk-child"></div>
+                                <div class="sk-circle4 sk-child"></div>
+                                <div class="sk-circle5 sk-child"></div>
+                                <div class="sk-circle6 sk-child"></div>
+                                <div class="sk-circle7 sk-child"></div>
+                                <div class="sk-circle8 sk-child"></div>
+                                <div class="sk-circle9 sk-child"></div>
+                                <div class="sk-circle10 sk-child"></div>
+                                <div class="sk-circle11 sk-child"></div>
+                                <div class="sk-circle12 sk-child"></div>
+                            </div>
+
                             Log in
                         </button>
                     </div>

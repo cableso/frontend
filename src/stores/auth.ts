@@ -1,18 +1,16 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 
 import axiosClient from '@/axios'
-import router from '@/router'
 
-interface User {
-    id: number
-    email: string
-}
+import type User from '@/types/User'
 
 export const useAuthStore = defineStore(
     'auth',
     () => {
         const user = ref<User | null>(null)
+        const router = useRouter()
 
         const setUser = (updatedUser: User | null) => {
             user.value = updatedUser
@@ -22,7 +20,7 @@ export const useAuthStore = defineStore(
             return user.value !== null
         }
 
-        const register = ({
+        const register = async ({
             email,
             password,
             passwordConfirmation
@@ -30,36 +28,39 @@ export const useAuthStore = defineStore(
             email: string
             password: string
             passwordConfirmation: string
-        }) => {
-            axiosClient.get('/sanctum/csrf-cookie').then(() => {
-                axiosClient
-                    .post('/auth/register', {
-                        email: email,
-                        password: password,
-                        password_confirmation: passwordConfirmation
-                    })
-                    .then(response => {
-                        if (response.data) {
-                            setUser({
-                                id: response.data.id,
-                                email: response.data.email
-                            })
+        }): Promise<string> => {
+            const error: string = ''
 
-                            router.push('/conversations')
-                        }
-                    })
+            await axiosClient.get('/sanctum/csrf-cookie')
+            const response = await axiosClient.post('/auth/register', {
+                email: email,
+                password: password,
+                password_confirmation: passwordConfirmation
             })
+
+            if (response.data) {
+                setUser({
+                    id: response.data.id,
+                    email: response.data.email
+                })
+
+                router.push('/conversations')
+            }
+
+            return error
         }
 
-        const login = ({
+        const login = async ({
             email,
             password
         }: {
             email: string
             password: string
-        }) => {
-            axiosClient.get('/sanctum/csrf-cookie').then(() => {
-                axiosClient
+        }): Promise<string> => {
+            let error = ''
+
+            await axiosClient.get('/sanctum/csrf-cookie').then(async () => {
+                await axiosClient
                     .post('/auth/login', {
                         email: email,
                         password: password
@@ -74,17 +75,23 @@ export const useAuthStore = defineStore(
                             router.push('/conversations')
                         }
                     })
+                    .catch(response => {
+                        error = response.response.data.error
+                    })
             })
+
+            return error
         }
 
-        const logout = () => {
-            axiosClient.get('/sanctum/csrf-cookie').then(() => {
-                axiosClient.post('/auth/logout')
-            })
+        const logout = async (): Promise<string> => {
+            await axiosClient.get('/sanctum/csrf-cookie')
+            await axiosClient.post('/auth/logout')
 
             setUser(null)
 
             router.push('/login')
+
+            return ''
         }
 
         return { user, setUser, isAuthenticated, register, login, logout }
