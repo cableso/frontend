@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
 
 import axiosClient from '@/axios'
 
@@ -10,7 +9,6 @@ export const useAuthStore = defineStore(
     'auth',
     () => {
         const user = ref<User | null>(null)
-        const router = useRouter()
 
         const setUser = (updatedUser: User | null) => {
             user.value = updatedUser
@@ -44,7 +42,7 @@ export const useAuthStore = defineStore(
                     email: response.data.email
                 })
 
-                router.push('/conversations')
+                window.location.href = '/conversations'
             }
 
             return error
@@ -65,18 +63,20 @@ export const useAuthStore = defineStore(
                         email: email,
                         password: password
                     })
-                    .then(response => {
+                    .then(async response => {
                         if (response.data) {
                             setUser({
                                 id: response.data.id,
                                 email: response.data.email
                             })
 
-                            router.push('/conversations')
+                            window.location.href = '/conversations'
                         }
                     })
                     .catch(response => {
-                        error = response.response.data.error
+                        if (response.response) {
+                            error = response.response.data.error
+                        }
                     })
             })
 
@@ -84,12 +84,13 @@ export const useAuthStore = defineStore(
         }
 
         const logout = async (): Promise<string> => {
-            await axiosClient.get('/sanctum/csrf-cookie')
-            await axiosClient.post('/auth/logout')
+            await axiosClient.get('/sanctum/csrf-cookie').then(async () => {
+                await axiosClient.delete('/auth/logout')
 
-            setUser(null)
+                setUser(null)
 
-            router.push('/login')
+                window.location.href = '/login'
+            })
 
             return ''
         }

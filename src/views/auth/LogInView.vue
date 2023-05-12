@@ -24,10 +24,11 @@
     const email = useFieldModel('email')
     const password = useFieldModel('password')
 
+    const authStore = useAuthStore()
+
     const error = ref<string>('')
     const loading = ref<boolean>(false)
 
-    const authStore = useAuthStore()
     const submit = handleSubmit(async values => {
         loading.value = true
         error.value = await authStore.login({
