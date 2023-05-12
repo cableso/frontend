@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-import SignUpView from '../views/SignUpView.vue'
-import LogInView from '../views/LogInView.vue'
+import SignUpView from '../views/auth/SignUpView.vue'
+import LogInView from '../views/auth/LogInView.vue'
+import ConversationsView from '../views/dashboard/ConversationsView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +11,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            redirect: '/sign-up'
+            redirect: '/conversations'
         },
         {
             path: '/sign-up',
@@ -21,15 +22,26 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LogInView
+        },
+        {
+            path: '/conversations',
+            name: 'conversations',
+            component: ConversationsView
         }
     ]
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async to => {
     const authStore = useAuthStore()
     const isAuthenticated = authStore.isAuthenticated()
 
-    console.log(isAuthenticated)
+    if (!isAuthenticated && to.path !== '/sign-up' && to.path !== '/login') {
+        router.push('/login')
+    }
+
+    if (isAuthenticated && (to.path === '/sign-up' || to.path === '/login')) {
+        router.push('/conversations')
+    }
 })
 
 export default router

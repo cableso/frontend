@@ -5,8 +5,10 @@
     import { useHead } from 'unhead'
     import { useForm } from 'vee-validate'
     import { object, string, ref } from 'yup'
+    import { useAuthStore } from '@/stores/auth'
 
-    import axiosClient from '../axios'
+    import axiosClient from '@/axios'
+    import router from '@/router'
 
     useHead({
         title: 'cable · Sign Up'
@@ -17,7 +19,7 @@
         password: string()
             .required('Password is required')
             .min(8, 'Minimum 8 Characters'),
-        passwordConfirmation: string()
+        password_confirmation: string()
             .required('Confirmation is required')
             .oneOf([ref('password'), ''], 'Passwords must match')
             .min(8, 'Minimum 8 Characters')
@@ -29,12 +31,22 @@
 
     const email = useFieldModel('email')
     const password = useFieldModel('password')
-    const passwordConfirmation = useFieldModel('passwordConfirmation')
+    const password_confirmation = useFieldModel('password_confirmation')
+
+    const authStore = useAuthStore()
 
     const submit = handleSubmit(values => {
-        // CSRF-Token
-        axiosClient.get('/sanctum/csrf-cookie').then(response => {
-            axiosClient.post('/auth/register', values)
+        axiosClient.get('/sanctum/csrf-cookie').then(() => {
+            axiosClient.post('/auth/register', values).then(response => {
+                if (response.data) {
+                    authStore.setUser({
+                        id: response.data.id,
+                        email: response.data.email
+                    })
+
+                    router.push('/conversations')
+                }
+            })
         })
     })
 </script>
@@ -158,15 +170,15 @@
 
                     <FormInput
                         id="password_confirmation"
-                        v-model="passwordConfirmation"
+                        v-model="password_confirmation"
                         placeholder="****************"
                         :maxlength="255"
                         :minlength="8"
                         type="password"
                         label="Confirm Password"
                         :valid="
-                            passwordConfirmation !== undefined &&
-                            errors.passwordConfirmation === undefined
+                            password_confirmation !== undefined &&
+                            errors.password_confirmation === undefined
                         "
                     >
                         <template #icon>
@@ -191,7 +203,7 @@
                         </template>
 
                         <template #error>
-                            {{ errors.passwordConfirmation }}
+                            {{ errors.password_confirmation }}
                         </template>
                     </FormInput>
 

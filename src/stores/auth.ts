@@ -2,8 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 interface User {
+    id: number
     email: string
-    id: string
 }
 
 export const useAuthStore = defineStore(
