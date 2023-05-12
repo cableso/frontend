@@ -51,6 +51,32 @@ export const useAuthStore = defineStore(
             })
         }
 
+        const login = ({
+            email,
+            password
+        }: {
+            email: string
+            password: string
+        }) => {
+            axiosClient.get('/sanctum/csrf-cookie').then(() => {
+                axiosClient
+                    .post('/auth/login', {
+                        email: email,
+                        password: password
+                    })
+                    .then(response => {
+                        if (response.data) {
+                            setUser({
+                                id: response.data.id,
+                                email: response.data.email
+                            })
+
+                            router.push('/conversations')
+                        }
+                    })
+            })
+        }
+
         const logout = () => {
             axiosClient.get('/sanctum/csrf-cookie').then(() => {
                 axiosClient.post('/auth/logout')
@@ -61,7 +87,7 @@ export const useAuthStore = defineStore(
             router.push('/login')
         }
 
-        return { user, setUser, isAuthenticated, register, logout }
+        return { user, setUser, isAuthenticated, register, login, logout }
     },
     {
         persist: true

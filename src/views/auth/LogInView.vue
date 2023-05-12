@@ -5,6 +5,7 @@
     import { useHead } from 'unhead'
     import { useForm } from 'vee-validate'
     import { object, string } from 'yup'
+    import { useAuthStore } from '@/stores/auth'
 
     useHead({
         title: 'cable · Log in'
@@ -22,8 +23,13 @@
     const email = useFieldModel('email')
     const password = useFieldModel('password')
 
+    const authStore = useAuthStore()
+
     const submit = handleSubmit(values => {
-        alert(JSON.stringify(values, null, 2))
+        authStore.login({
+            email: values.email,
+            password: values.password
+        })
     })
 </script>
 
@@ -72,6 +78,9 @@
                         :minlength="3"
                         type="email"
                         label="Email address"
+                        :valid="
+                            email !== undefined && errors.email === undefined
+                        "
                     >
                         <template #icon>
                             <svg
@@ -110,6 +119,10 @@
                         :minlength="8"
                         type="password"
                         label="Password"
+                        :valid="
+                            password !== undefined &&
+                            errors.password === undefined
+                        "
                     >
                         <template #icon>
                             <svg
