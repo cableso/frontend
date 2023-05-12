@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import DashboardLayout from '@/layouts/DashboardLayout.vue'
+
     import { useAuthStore } from '@/stores/auth'
 
     const authStore = useAuthStore()
@@ -9,7 +11,11 @@
 </script>
 
 <template>
-    <div>
-        <button @click="logout">Log out</button>
-    </div>
+    <DashboardLayout>
+        <div>
+            <button @click="logout">Log out</button>
+
+            <RouterLink to="/inbox">TO INBOX</RouterLink>
+        </div>
+    </DashboardLayout>
 </template>

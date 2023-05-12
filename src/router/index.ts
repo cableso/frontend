@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 
 import SignUpView from '@/views/auth/SignUpView.vue'
 import LogInView from '@/views/auth/LogInView.vue'
+import InboxView from '@/views/dashboard/InboxView.vue'
 import ConversationsView from '@/views/dashboard/ConversationsView.vue'
 
 const router = createRouter({
@@ -22,6 +23,11 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LogInView
+        },
+        {
+            path: '/inbox',
+            name: 'inbox',
+            component: InboxView
         },
         {
             path: '/conversations',
