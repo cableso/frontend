@@ -5,6 +5,7 @@ import SignUpView from '@/views/auth/SignUpView.vue'
 import LogInView from '@/views/auth/LogInView.vue'
 import InboxView from '@/views/dashboard/InboxView.vue'
 import ConversationsView from '@/views/dashboard/ConversationsView.vue'
+import AppNav from '@/components/AppNav.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,12 +28,18 @@ const router = createRouter({
         {
             path: '/inbox',
             name: 'inbox',
-            component: InboxView
+            components: {
+                default: InboxView,
+                navigation: AppNav
+            }
         },
         {
             path: '/conversations',
             name: 'conversations',
-            component: ConversationsView
+            components: {
+                default: ConversationsView,
+                navigation: AppNav
+            }
         }
     ]
 })

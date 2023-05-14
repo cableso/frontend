@@ -18,4 +18,9 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 
-app.mount('#app')
+const mount = async () => {
+    await router.isReady()
+    app.mount('#app')
+}
+
+mount()
