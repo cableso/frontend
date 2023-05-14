@@ -6,6 +6,10 @@ export const theme = {
     extend: {
         fontFamily: {
             sans: ['Inter', ..._fontFamily.sans]
+        },
+        colors: {
+            'light-1': '#FCFCFC',
+            'light-2': '#F8F8F8'
         }
     }
 }

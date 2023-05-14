@@ -39,7 +39,7 @@ const router = createRouter({
 
 router.beforeEach(async to => {
     const authStore = useAuthStore()
-    const isAuthenticated = authStore.isAuthenticated()
+    const isAuthenticated = await authStore.isAuthenticated()
 
     if (!isAuthenticated && to.path !== '/sign-up' && to.path !== '/login') {
         router.push('/login')
