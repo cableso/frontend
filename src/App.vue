@@ -18,30 +18,3 @@
         </main>
     </div>
 </template>
-
-<style scoped>
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: all 0.2s ease;
-    }
-
-    .fade-enter-from {
-        opacity: 0;
-        transform: translateY(-1rem);
-    }
-
-    .fade-enter-to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .fade-leave-from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .fade-leave-to {
-        opacity: 0;
-        transform: translateY(-1rem);
-    }
-</style>
