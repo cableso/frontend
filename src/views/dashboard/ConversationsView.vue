@@ -8,6 +8,8 @@
 
     const authStore = useAuthStore()
 
+    console.log(authStore.user, authStore.currentProject)
+
     const logout = async () => {
         await authStore.logout()
     }

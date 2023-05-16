@@ -10,9 +10,14 @@ export const useAuthStore = defineStore(
     'auth',
     () => {
         const user = ref<User | null>(null)
+        const currentProject = ref<number>(0)
 
         const setUser = (updatedUser: User | null) => {
             user.value = updatedUser
+        }
+
+        const setCurrentProject = (updatedCurrentProject: number) => {
+            currentProject.value = updatedCurrentProject
         }
 
         const isAuthenticated = async (): Promise<boolean> => {
@@ -81,7 +86,8 @@ export const useAuthStore = defineStore(
             if (response) {
                 setUser({
                     id: response.data.id,
-                    email: response.data.email
+                    email: response.data.email,
+                    projects: response.data.projects
                 })
 
                 window.location.href = HOME_PATH
@@ -100,7 +106,18 @@ export const useAuthStore = defineStore(
             return ''
         }
 
-        return { user, setUser, isAuthenticated, register, login, logout }
+        return {
+            user,
+            currentProject,
+
+            isAuthenticated,
+
+            register,
+            login,
+            logout,
+
+            setCurrentProject
+        }
     },
     { persist: true }
 )
