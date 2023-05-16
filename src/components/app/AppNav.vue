@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue'
     import { useRoute } from 'vue-router'
-    import AppLogo from '@/components/AppLogo.vue'
+    import AppLogo from '@/components/app/AppLogo.vue'
 
     const route = useRoute()
 

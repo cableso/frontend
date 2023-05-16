@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import AppLogo from '@/components/AppLogo.vue'
-    import FormInput from '@/components/FormInput.vue'
+    import AppLogo from '@/components/app/AppLogo.vue'
+    import FormInput from '@/components/form/FormInput.vue'
 
     import { useHead } from 'unhead'
     import { useForm } from 'vee-validate'

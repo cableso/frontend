@@ -1,5 +1,10 @@
 <script setup lang="ts">
     import { RouterView } from 'vue-router'
+    import { useAuthStore } from './stores/auth'
+
+    import CreateProjectModal from '@/modals/CreateProjectModal.vue'
+
+    const authStore = useAuthStore()
 </script>
 
 <template>
@@ -15,6 +20,11 @@
                     <component :is="Component" />
                 </transition>
             </router-view>
+
+            <CreateProjectModal
+                v-if="authStore.user?.projects"
+                :closeable="false"
+            />
         </main>
     </div>
 </template>

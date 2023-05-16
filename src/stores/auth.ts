@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import axiosClient from '@/axios'
+import axiosClient from '@/utils/axios'
 import type User from '@/types/User'
 
 const HOME_PATH = '/inbox'
