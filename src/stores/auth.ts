@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 import axiosClient from '@/utils/axios'
 import type User from '@/types/User'
+import type Project from '@/types/Project'
 
 const HOME_PATH = '/inbox'
 
@@ -16,10 +17,16 @@ export const useAuthStore = defineStore(
             user.value = updatedUser
         }
 
+        /* Projects */
         const setCurrentProject = (updatedCurrentProject: number) => {
             currentProject.value = updatedCurrentProject
         }
 
+        const addProject = (project: Project) => {
+            user.value?.projects?.push(project)
+        }
+
+        /* Auth */
         const isAuthenticated = async (): Promise<boolean> => {
             await axiosClient.get('/sanctum/csrf-cookie')
 
@@ -108,7 +115,9 @@ export const useAuthStore = defineStore(
 
         return {
             user,
+
             currentProject,
+            addProject,
 
             isAuthenticated,
 

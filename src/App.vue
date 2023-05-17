@@ -22,7 +22,7 @@
             </router-view>
 
             <CreateProjectModal
-                v-if="authStore.user?.projects"
+                v-if="authStore.user && authStore.user.projects?.length === 0"
                 :closeable="false"
             />
         </main>

@@ -5,6 +5,8 @@
     import { ref } from 'vue'
     import { useForm } from 'vee-validate'
     import { object, string } from 'yup'
+    import axiosClient from '@/utils/axios'
+    import { useAuthStore } from '@/stores/auth'
 
     defineProps({
         closeable: Boolean
@@ -29,18 +31,38 @@
     const error = ref<string>('')
     const loading = ref<boolean>(false)
 
+    const authStore = useAuthStore()
+
     const submit = handleSubmit(async values => {
         loading.value = true
-        // Api call
+
+        const response = await axiosClient
+            .post('/api/project/new', {
+                name: values.name,
+                url: values.url,
+                industry: values.industry,
+                language: values.language
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    authStore.logout()
+                }
+            })
+
+        if (response?.data) {
+            authStore.addProject({
+                id: response.data.id,
+                name: response.data.name
+            })
+        }
+
         loading.value = false
     })
 </script>
 
 <template>
     <AppModal :closable="closeable">
-        <h3 class="text-xl font-semibold tracking-tight text-center">
-            New project
-        </h3>
+        <h3 class="text-xl font-semibold text-center">New project</h3>
 
         <form
             @submit="submit"

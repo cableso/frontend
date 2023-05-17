@@ -210,7 +210,7 @@
                         {{ error }}
                     </span>
 
-                    <div class="pt-4">
+                    <div class="pt-2">
                         <p class="text-xs opacity-70">
                             By creating an account, you agree to cable's
                             <a
@@ -232,7 +232,7 @@
 
                         <button
                             type="submit"
-                            class="w-full py-2 mt-2 text-sm transition bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
+                            class="flex items-center justify-center w-full py-2 text-sm transition-all bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
                         >
                             <div
                                 v-if="loading"
