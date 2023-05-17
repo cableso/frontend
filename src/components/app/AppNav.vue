@@ -154,6 +154,11 @@
                     </div>
                 </div>
             </transition>
+
+            <div
+                @click.self="() => (projectSelectorOpen = false)"
+                class="fixed top-0 left-0 w-screen h-screen"
+            />
         </div>
 
         <!-- Navigation Links -->
