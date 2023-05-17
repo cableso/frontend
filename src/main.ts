@@ -8,6 +8,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
+import { useAuthStore } from './stores/auth'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
@@ -20,6 +21,10 @@ app.use(router)
 
 const mount = async () => {
     await router.isReady()
+
+    const authStore = useAuthStore()
+    authStore.refresh()
+
     app.mount('#app')
 }
 

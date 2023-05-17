@@ -6,6 +6,10 @@
     box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 }
 
+.shadow-hard {
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.9);
+}
+
 /* Forms */
 .floating-label:focus-within ~ label,
 .floating-label:not(:placeholder-shown) ~ label {

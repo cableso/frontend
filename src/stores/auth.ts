@@ -17,6 +17,20 @@ export const useAuthStore = defineStore(
             user.value = updatedUser
         }
 
+        const refresh = async () => {
+            if (await isAuthenticated()) {
+                const response = await axiosClient.get('/api/user')
+
+                if (response) {
+                    setUser({
+                        id: response.data.id,
+                        email: response.data.email,
+                        projects: response.data.projects
+                    })
+                }
+            }
+        }
+
         /* Projects */
         const setCurrentProject = (updatedCurrentProject: number) => {
             currentProject.value = updatedCurrentProject
@@ -28,8 +42,6 @@ export const useAuthStore = defineStore(
 
         /* Auth */
         const isAuthenticated = async (): Promise<boolean> => {
-            await axiosClient.get('/sanctum/csrf-cookie')
-
             return user.value !== null
         }
 
@@ -115,17 +127,17 @@ export const useAuthStore = defineStore(
 
         return {
             user,
+            refresh,
 
             currentProject,
+            setCurrentProject,
             addProject,
 
             isAuthenticated,
 
             register,
             login,
-            logout,
-
-            setCurrentProject
+            logout
         }
     },
     { persist: true }
