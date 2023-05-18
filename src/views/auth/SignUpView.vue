@@ -232,7 +232,7 @@
 
                         <button
                             type="submit"
-                            class="flex items-center justify-center w-full py-2 text-sm transition-all bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
+                            class="flex items-center justify-center w-full py-2 mt-4 text-sm transition-all bg-black rounded-md text-neutral-50 hover:bg-neutral-800 active:scale-95"
                         >
                             <div
                                 v-if="loading"

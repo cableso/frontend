@@ -1,10 +1,13 @@
 <script setup lang="ts">
     import { RouterView } from 'vue-router'
     import { useAuthStore } from './stores/auth'
+    import { ref } from 'vue'
 
     import CreateProjectModal from '@/modals/CreateProjectModal.vue'
 
     const authStore = useAuthStore()
+
+    const createProjectOpen = ref<boolean>(true)
 </script>
 
 <template>
@@ -23,6 +26,7 @@
 
             <CreateProjectModal
                 v-if="authStore.user && authStore.user.projects?.length === 0"
+                v-model="createProjectOpen"
                 :closeable="false"
             />
         </main>

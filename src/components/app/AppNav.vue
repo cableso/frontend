@@ -3,6 +3,7 @@
     import { useRoute } from 'vue-router'
     import { useAuthStore } from '@/stores/auth'
     import AppLogo from '@/components/app/AppLogo.vue'
+    import AppConfirmation from '@/components/app/AppConfirmation.vue'
 
     import type Project from '@/types/Project'
 
@@ -12,6 +13,7 @@
     const hoverEffect = ref()
     const projectSelectorOpen = ref<boolean>(false)
     const currentProject = ref<Project>()
+    const logoutConfirmationOpen = ref<boolean>(false)
 
     const authStore = useAuthStore()
 
@@ -58,6 +60,10 @@
             currentProject.value =
                 authStore.user.projects[authStore.currentProject]
         }
+    }
+
+    const handleClickLogout = () => {
+        logoutConfirmationOpen.value = true
     }
 
     const tabs = [
@@ -156,6 +162,7 @@
             </transition>
 
             <div
+                v-if="projectSelectorOpen"
                 @click.self="() => (projectSelectorOpen = false)"
                 class="fixed top-0 left-0 w-screen h-screen"
             />
@@ -190,5 +197,39 @@
                 class="h-4 w-0.5 bg-black absolute right-0 transition-all duration-300 rounded mt-2.5"
             />
         </div>
+
+        <!-- Logout -->
+        <div class="flex items-center justify-between mt-auto mb-6">
+            <button
+                @click="handleClickLogout"
+                class="flex items-center justify-center w-8 h-8 p-1 transition rounded-full shadow-soft hover:bg-black hover:bg-opacity-5 hover:shadow-hard"
+            >
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M5.75 4.75L13.25 7.82143V19.25L5.75 16.1786V4.75ZM5.75 4.75L17.2557 4.81575C17.8058 4.81889 18.25 5.26568 18.25 5.81573V16.25C18.25 16.8023 17.8023 17.25 17.25 17.25H13.25"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+
+        <AppConfirmation
+            v-model="logoutConfirmationOpen"
+            @confirm="authStore.logout"
+        >
+            <template #title> Confirm logout</template>
+            <template #description>
+                Are you sure you want to log out of your current session?
+            </template>
+        </AppConfirmation>
     </nav>
 </template>

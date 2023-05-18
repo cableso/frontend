@@ -45,6 +45,7 @@
         <input
             :id="id"
             ref="input"
+            v-model="modelValue"
             :placeholder="placeholder"
             :maxlength="maxlength"
             :minlength="minlength"
@@ -54,12 +55,7 @@
             :value="modelValue"
             :autofocus="autofocus"
             :disabled="disabled"
-            @input="
-                (event: any) => {
-                    $emit('update:modelValue', event.target ? event.target.value : null)
-                    $emit('input', event)
-                }
-            "
+            @input="(event: any) => $emit('input', event)"
             @blur="$emit('blur')"
             @keypress="event => $emit('keypress', event)"
         />
