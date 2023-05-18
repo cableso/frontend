@@ -75,6 +75,10 @@
         {
             title: 'Conversations',
             value: '/conversations'
+        },
+        {
+            title: 'Training',
+            value: '/training'
         }
     ]
 </script>

@@ -5,6 +5,8 @@ import SignUpView from '@/views/auth/SignUpView.vue'
 import LogInView from '@/views/auth/LogInView.vue'
 import InboxView from '@/views/dashboard/InboxView.vue'
 import ConversationsView from '@/views/dashboard/ConversationsView.vue'
+import TrainingView from '@/views/dashboard/TrainingView.vue'
+
 import AppNav from '@/components/app/AppNav.vue'
 
 const router = createRouter({
@@ -40,6 +42,14 @@ const router = createRouter({
                 default: ConversationsView,
                 navigation: AppNav
             }
+        },
+        {
+            path: '/training',
+            name: 'training',
+            components: {
+                default: TrainingView,
+                navigation: AppNav
+            }
         }
     ]
 })
@@ -53,7 +63,7 @@ router.beforeEach(async to => {
     }
 
     if (isAuthenticated && (to.path === '/sign-up' || to.path === '/login')) {
-        router.push('/conversations')
+        router.push('/inbox')
     }
 })
 

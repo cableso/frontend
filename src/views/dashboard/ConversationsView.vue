@@ -21,12 +21,7 @@
 
         <div class="flex w-full h-full">
             <div class="relative flex flex-col p-6 w-52 bg-light-1 shadow-soft">
-                <button
-                    @click="logout"
-                    class="p-4 text-white bg-black rounded-full"
-                >
-                    log out!
-                </button>
+                test
             </div>
         </div>
     </div>
