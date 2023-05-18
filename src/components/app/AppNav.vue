@@ -4,6 +4,7 @@
     import { useAuthStore } from '@/stores/auth'
     import AppLogo from '@/components/app/AppLogo.vue'
     import AppConfirmation from '@/components/app/AppConfirmation.vue'
+    import AppPopup from '@/components/app/AppPopup.vue'
 
     import type Project from '@/types/Project'
 
@@ -11,8 +12,8 @@
 
     const activeEffect = ref()
     const hoverEffect = ref()
-    const projectSelectorOpen = ref<boolean>(false)
     const currentProject = ref<Project>()
+    const projectSelectorOpen = ref<boolean>(false)
     const logoutConfirmationOpen = ref<boolean>(false)
 
     const authStore = useAuthStore()
@@ -85,14 +86,11 @@
         <AppLogo class="h-8 mt-6" />
 
         <!-- Project Selector -->
-        <div
+        <AppPopup
+            v-model="projectSelectorOpen"
             v-if="currentProject"
-            class="relative w-[130px] mt-6"
         >
-            <button
-                @click="() => (projectSelectorOpen = !projectSelectorOpen)"
-                class="relative z-40 flex items-center w-full p-2 transition rounded-md hover:bg-black hover:bg-opacity-5 shadow-soft hover:shadow-hard"
-            >
+            <template #trigger>
                 <img
                     :src="
                         'https://ui-avatars.com/api/?name=' +
@@ -120,53 +118,35 @@
                         d="M15.25 10.75L12 14.25L8.75 10.75"
                     ></path>
                 </svg>
-            </button>
+            </template>
 
-            <transition
-                enter-active-class="transition-all duration-300"
-                enter-from-class="scale-75 -translate-y-8 opacity-0"
-                enter-to-class="scale-100 translate-y-0 opacity-100"
-                leave-active-class="transition-all duration-200"
-                leave-from-class="scale-100 translate-y-0 opacity-100"
-                leave-to-class="scale-75 -translate-y-8 opacity-0"
-            >
+            <template #content>
                 <div
-                    v-if="projectSelectorOpen"
-                    class="absolute z-30 min-w-full max-w-[14rem] transition-all py-2 mt-2 flex items-center justify-center flex-col bg-white rounded-md drop-shadow-xl bg-opacity-80 backdrop-blur shadow-soft"
+                    class="w-[90%]"
+                    v-for="(project, index) in authStore.user?.projects"
+                    :key="project.id"
                 >
-                    <div
-                        class="w-[90%]"
-                        v-for="(project, index) in authStore.user?.projects"
-                        :key="project.id"
+                    <button
+                        v-if="index !== authStore.currentProject"
+                        @click="selectProject(index)"
+                        class="relative z-40 flex items-center w-full p-2 my-1 transition rounded-md hover:bg-black hover:bg-opacity-5 shadow-soft hover:shadow-hard"
                     >
-                        <button
-                            v-if="index !== authStore.currentProject"
-                            @click="selectProject(index)"
-                            class="relative z-40 flex items-center w-full p-2 my-1 transition rounded-md hover:bg-black hover:bg-opacity-5 shadow-soft hover:shadow-hard"
-                        >
-                            <img
-                                :src="
-                                    'https://ui-avatars.com/api/?name=' +
-                                    project.name.replace(' ', '+')
-                                "
-                                class="w-5 h-5 mr-2 rounded-full"
-                                alt="project avatar"
-                            />
+                        <img
+                            :src="
+                                'https://ui-avatars.com/api/?name=' +
+                                project.name.replace(' ', '+')
+                            "
+                            class="w-5 h-5 mr-2 rounded-full"
+                            alt="project avatar"
+                        />
 
-                            <p class="text-xs truncate max-w-[80%]">
-                                {{ project.name }}
-                            </p>
-                        </button>
-                    </div>
+                        <p class="text-xs truncate max-w-[80%]">
+                            {{ project.name }}
+                        </p>
+                    </button>
                 </div>
-            </transition>
-
-            <div
-                v-if="projectSelectorOpen"
-                @click.self="() => (projectSelectorOpen = false)"
-                class="fixed top-0 left-0 w-screen h-screen"
-            />
-        </div>
+            </template>
+        </AppPopup>
 
         <!-- Navigation Links -->
         <div class="relative flex flex-col w-full px-4 mt-6">
