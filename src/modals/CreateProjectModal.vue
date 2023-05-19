@@ -322,6 +322,8 @@
                     Create project
                 </button>
             </div>
+
+            <slot />
         </form>
     </AppModal>
 </template>

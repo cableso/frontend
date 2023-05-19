@@ -25,9 +25,21 @@ export const useAuthStore = defineStore(
                     setUser({
                         id: response.data.id,
                         email: response.data.email,
-                        projects: response.data.projects
+                        projects: response.data.projects,
+                        emailVerifiedAt: response.data.emailVerifiedAt
                     })
                 }
+            }
+        }
+
+        const setEmailVerifiedAt = (emailVerifiedAt: Date) => {
+            if (user.value) {
+                setUser({
+                    id: user.value.id,
+                    email: user.value.email,
+                    projects: user.value.projects,
+                    emailVerifiedAt: emailVerifiedAt
+                })
             }
         }
 
@@ -106,7 +118,8 @@ export const useAuthStore = defineStore(
                 setUser({
                     id: response.data.id,
                     email: response.data.email,
-                    projects: response.data.projects
+                    projects: response.data.projects,
+                    emailVerifiedAt: response.data.emailVerifiedAt
                 })
 
                 window.location.href = HOME_PATH
@@ -128,6 +141,8 @@ export const useAuthStore = defineStore(
         return {
             user,
             refresh,
+
+            setEmailVerifiedAt,
 
             currentProject,
             setCurrentProject,

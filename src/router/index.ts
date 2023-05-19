@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 
 import SignUpView from '@/views/auth/SignUpView.vue'
 import LogInView from '@/views/auth/LogInView.vue'
+import VerifyEmailView from '@/views/auth/VerifyEmailView.vue'
 import InboxView from '@/views/dashboard/InboxView.vue'
 import ConversationsView from '@/views/dashboard/ConversationsView.vue'
 import TrainingView from '@/views/dashboard/TrainingView.vue'
@@ -26,6 +27,11 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LogInView
+        },
+        {
+            path: '/verifyEmail',
+            name: 'verifyEmail',
+            component: VerifyEmailView
         },
         {
             path: '/inbox',

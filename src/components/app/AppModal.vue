@@ -14,7 +14,7 @@
 
 <template>
     <div
-        class="fixed top-0 left-0 z-50 w-screen h-screen pointer-events-none select-none"
+        class="fixed top-0 left-0 z-[100] w-screen h-screen pointer-events-none select-none"
     >
         <transition
             enter-active-class="transition duration-200 ease"
