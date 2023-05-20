@@ -6,15 +6,14 @@
     import { useHead } from 'unhead'
     import { useForm } from 'vee-validate'
     import { object, string } from 'yup'
-    import { useAuthStore } from '@/stores/auth'
+    import axiosClient from '@/utils/axios'
 
     useHead({
-        title: 'cable · Log in'
+        title: 'cable · Forgot Password'
     })
 
     const schema = object({
-        email: string().required('Email is required').email('Invalid Email'),
-        password: string().required('Password is required')
+        email: string().required('Email is required').email('Invalid Email')
     })
 
     const { errors, useFieldModel, handleSubmit } = useForm({
@@ -22,20 +21,23 @@
     })
 
     const email = useFieldModel('email')
-    const password = useFieldModel('password')
-
-    const authStore = useAuthStore()
 
     const error = ref<string>('')
     const loading = ref<boolean>(false)
+    const emailSent = ref<boolean>(false)
 
     const submit = handleSubmit(async values => {
+        if (emailSent.value) return
+
         loading.value = true
-        error.value = await authStore.login({
-            email: values.email,
-            password: values.password
+        const response = await axiosClient.post('/auth/forgot-password', {
+            email: values.email
         })
         loading.value = false
+
+        if (response.status === 200) {
+            emailSent.value = true
+        }
     })
 </script>
 
@@ -61,14 +63,16 @@
             <div
                 class="w-full max-w-sm px-10 py-5 bg-white rounded-lg shadow-soft"
             >
-                <h1 class="text-2xl font-semibold tracking-tight">Log in</h1>
+                <h1 class="text-2xl font-semibold tracking-tight">
+                    Forgot password
+                </h1>
                 <p class="mt-1 opacity-70">
-                    New to cable?
+                    Remember your password?
                     <router-link
                         class="text-black transition opacity-70 hover:opacity-100"
-                        to="/sign-up"
+                        to="/login"
                     >
-                        Create account
+                        Log in
                     </router-link>
                 </p>
 
@@ -117,52 +121,6 @@
                         </template>
                     </FormInput>
 
-                    <FormInput
-                        id="password"
-                        v-model="password"
-                        placeholder="****************"
-                        :maxlength="255"
-                        :minlength="8"
-                        type="password"
-                        label="Password"
-                        :valid="
-                            password !== undefined &&
-                            errors.password === undefined
-                        "
-                    >
-                        <template #icon>
-                            <svg
-                                width="24"
-                                height="24"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M15 13.25C17.3472 13.25 19.25 11.3472 19.25 9C19.25 6.65279 17.3472 4.75 15 4.75C12.6528 4.75 10.75 6.65279 10.75 9C10.75 9.31012 10.7832 9.61248 10.8463 9.90372L4.75 16V19.25H8L8.75 18.5V16.75H10.5L11.75 15.5V13.75H13.5L14.0963 13.1537C14.3875 13.2168 14.6899 13.25 15 13.25Z"
-                                ></path>
-                                <path
-                                    stroke="currentColor"
-                                    d="M16.5 8C16.5 8.27614 16.2761 8.5 16 8.5C15.7239 8.5 15.5 8.27614 15.5 8C15.5 7.72386 15.7239 7.5 16 7.5C16.2761 7.5 16.5 7.72386 16.5 8Z"
-                                ></path>
-                            </svg>
-                        </template>
-
-                        <template #error>
-                            {{ errors.password }}
-                        </template>
-                    </FormInput>
-
-                    <RouterLink
-                        class="text-sm transition opacity-60 hover:opacity-100"
-                        to="/forgot-password"
-                    >
-                        Forgot your password?
-                    </RouterLink>
-
                     <span
                         v-if="error"
                         class="text-xs text-red-600"
@@ -193,7 +151,8 @@
                                 <div class="sk-circle12 sk-child"></div>
                             </div>
 
-                            Log in
+                            <span v-if="!emailSent">Reset Password</span>
+                            <span v-else>Email sent!</span>
                         </button>
                     </div>
                 </form>
