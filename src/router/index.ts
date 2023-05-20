@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/auth'
 import SignUpView from '@/views/auth/SignUpView.vue'
 import LogInView from '@/views/auth/LogInView.vue'
 import ForgotPasswordView from '@/views/auth/ForgotPasswordView.vue'
+import ResetPasswordView from '@/views/auth/ResetPasswordView.vue'
 import VerifyEmailView from '@/views/auth/VerifyEmailView.vue'
 import InboxView from '@/views/dashboard/InboxView.vue'
 import ConversationsView from '@/views/dashboard/ConversationsView.vue'
@@ -33,6 +34,11 @@ const router = createRouter({
             path: '/forgot-password',
             name: 'forgotPassword',
             component: ForgotPasswordView
+        },
+        {
+            path: '/reset-password',
+            name: 'resetPassword',
+            component: ResetPasswordView
         },
         {
             path: '/verifyEmail',
@@ -74,7 +80,8 @@ router.beforeEach(async to => {
         !isAuthenticated &&
         to.path !== '/sign-up' &&
         to.path !== '/login' &&
-        to.path !== '/forgot-password'
+        to.path !== '/forgot-password' &&
+        to.path !== '/reset-password'
     ) {
         router.push('/login')
     }
@@ -83,7 +90,8 @@ router.beforeEach(async to => {
         isAuthenticated &&
         (to.path === '/sign-up' ||
             to.path === '/login' ||
-            to.path === '/forgot-password')
+            to.path === '/forgot-password' ||
+            to.path === '/reset-password')
     ) {
         router.push('/inbox')
     }
